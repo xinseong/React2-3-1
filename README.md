@@ -1,6 +1,7 @@
-React2-3-1
-===========
-## 201930341 윤민성
+React2-3-1 
+
+## 201930341윤민성   
+<br>
 
 ## Next.js
    
@@ -66,7 +67,7 @@ React2-3-1
 *   전역 객체나 HTML요소를 반드시 사용해야 하는 컴포넌트를 다루는 방법을 별도로 제 공합니다. 
 
 *   반면 fs, child_proces와 같이 Node• js에서만 사용할 수 있는 라이브러리나 API 를 사용하려는 경우,각 요청 별 데이터를 클라이언트로 보내기 전에 서버 사이드 코드를 실행하거나 페이지 생성 시점에 해당코드를 처리하는 방식을 지원합니다.
-	  + 어떤 방식으로 지원하는지는 각 페이지가 어떤 렌더링 방식을 사용하는가에 따라 결정됩니다.
+    + 어떤 방식으로 지원하는지는 각 페이지가 어떤 렌더링 방식을 사용하는가에 따라 결정됩니다.
 
 *   클라이언트 사이드 앱, 프로그레시브 웹 앱, 오프라인 웹앱 도 쉽게 만들 수 있습니다.
 
@@ -109,17 +110,17 @@ npx create-next-app 앱이름 - use-npm
 * pages/ 디렉토리 안의 모든 js파일은 public 페이지가 됩니다.
 
 *  pages/ 의 indexjs파일을 복사해서, aboutjs로 이름을 바꾸면,http://localhost5000/about 으로 접속할 수 있습니다.
-	
+  
 * public/ 디렉토리에는 웹 사이트의 모든 퍼블릭 페이지와 정적 콘텐츠가 있습
-	- 이미지, 컴파일된 cSs, 컴파일된. is, 폰트 등.
+  - 이미지, 컴파일된 cSs, 컴파일된. is, 폰트 등.
 
 * styles/ 디렉토리에는 앱에서 사용하는 스타일시트 넣습니다.
-	- 하지만 이 디렉토리가 필수는 아님
+  - 하지만 이 디렉토리가 필수는 아님
 
 *  용도가 정해져 있는 디렉토리는 pages/ 와 public/ 뿐입니다.
 
 *  나머지 디렉토리는 필요에 따라서 다른 목적으로 사용하거나 삭제해도 됩니다.
-	- 프로젝트 root에 필요한 디렉토리를 새로 생성해서 사용가능
+  - 프로젝트 root에 필요한 디렉토리를 새로 생성해서 사용가능
 
   ## 타입스크립트 지원
 
@@ -128,7 +129,7 @@ npx create-next-app 앱이름 - use-npm
 * 기본 언어를 타입스크립트로 지정하려면 root에 tscontig.json이라는 설정파일 생성하면 됩니다.
 
 * 그런 다음 npm run dev 명령을 실행하면 다은과 같은 메시지를 확인할 수 있습니다.
-	- 패키지를 설치하고 나면 비어 있던 tsconfig.json 파일의 내용이 자동으로 채워집니다.
+  - 패키지를 설치하고 나면 비어 있던 tsconfig.json 파일의 내용이 자동으로 채워집니다.
 
 ```
 npm i -g create-react-app
@@ -158,5 +159,205 @@ options: loaderOptions,// 로더의 옵션 지정},
 return config;
 },
 }
+```
+*   이 페이지는 div 요소 안에 문자열인 표시합니다.
+*   외부 AP를 호출 하지 않으며 항상 같은 문자열만 표시됩니다.
+
+* 다음 코드는 페이지를 요청할 때마다사용자 환영 문구를 표시합니다.
+* 특정 사용자 정보를 가져온 다음클라이언트에 전달해서 사용할 수 있도록 하고 있습니다.
+* 이 경우 미리 예약된 getServerSide Props() 함수를 사용합니다.
 
 ```
+import React from 'react';
+
+export async function getServerSideProps() {
+  const userRequest = await fetch("https://example.com/api/user");
+  const userData = await userRequest.json();
+
+  return {
+    props: {
+      user: userData,
+    },
+  };
+}
+
+function IndexPage(props) {
+  return <div>Welcome, {props.user.name}!</div>;
+}
+
+export default IndexPage;
+
+```
+
+* getServersideProps라는 비동기 함수를 export합니다.
+* getServerSideProps 함수는 props라는 속성값을 갖는 객체를 반환합니다.props는 컴포넌트로 전달되어 서버와 클라이언트 모두가 props에 접근할 수 있게 됩니다.
+* IndexPage 함수를 수정해서 props를 인자로 받습니다.
+
+### 컴포넌트 생성
+```
+import React from 'react';
+
+function MyComponent(props) {
+  return (
+    <div>
+      <h1>{props.title}</h1>
+      <p>{props.description}</p>
+    </div>
+  );
+}
+
+export default MyComponent;
+```
+
+### 컴포넌트 사용
+```
+import React from 'react';
+import MyComponent from './MyComponent'; // 컴포넌트 파일의 경로에 맞게 수정
+
+function App() {
+  return (
+    <div>
+      <MyComponent title="제목" description="이것은 설명입니다." />
+    </div>
+  );
+}
+
+export default App;
+```
+## 이미지 넣기
+```
+import Image from "next/image";
+
+export default function ImagePage(){
+  return (
+    <>
+      <div style={{
+        width: 500,
+        height: 200,
+        position: 'relative'
+      }}>
+        
+       <Image 
+        src='https://cdn.pixabay.com/photo/2023/09/06/12/21/waves-8236919_1280.jpg' 
+        layout="fill" 
+        objectFit="cover" 
+        alt="test image"      
+      />
+      </div>
+    </>
+  )
+}
+
+```
+### CSR을 사용할 때의 주요 이점 
+* 전체 자바스크립트 번들을 다운로드한다는 것은 렌더링할 모든페이지가 이미 브라우저에 다운로드 되어 있다는 뜻
+* 다른 페이지로 이동해도 서버에 요청할 필요없이. 바로 페이지를 이동할 수 있습니다.
+* 페이지를 바꾸기 위해 새로 고칠 필요가 없습니다.
+
+### 쉬운 페이지 전환
+* 클라이언트에서 내비게이션은 브라우저 화면을 새로 고칠 필요 없이 다른 페이지로 이동을 가능 
+* 페이지 간 전환에 멋진 효과를 넣을 수도 있습니다. 애니메이션을 방해할 요소가 없기 때문입니다. 
+
+
+
+
+# 동작 컴포넌트 로딩
+* 앞서 React.useEffect 혹을 사용하여 브라우저에서 코드를 실행하는 경우에만 컴포넌트를 렌더링 한다.
+* dynamic 함수로도 똑갈이 동작하게 할 수 있다.
+
+# 라우팅 시스템
+* eact의 React Router, Reach Router 등은 클라이언트 라우팅만 구현할 수 있습니다.
+* Next는 파일시스템 기반 페이지와 라우팅을 합니다.
+
+## 동적 라우팅
+
+* /pages/posts/[slug].js 파일을 생성하고 다음과 같이 useRouter를 사용하면 파라메터를 사용할 수 있다.
+* ��대괄호는 반드시 사용해야 하고, slug는 pid, category 등 원하는 것을 넣으면 된다.
+
+```
+import { useRouter } from 'next/router'
+
+const Post = () => {
+  const router = useRouter
+  //{"pid": "foo"}, {"pid": "bar"}
+  const { pid }= router.query
+  return <p> Post: {pid} </p>
+
+}
+export default Post
+```
+## 페이지에서 경로 매개변수 
+
+* 내장 getServerSideProps 함수를 통해 URL에서 동적으로 [name] 변수 값을 가져온다.
+
+```
+export async function getServerSideProps (( params )){
+
+  const { name } = params;
+  return {
+    props: ( name,
+    );
+  }
+  function Greet (props) {
+  return {
+    <h1> Hello, (props.name)! </h1>
+    };
+  }
+}
+export default Greet;
+```
+## 네비게이션
+* Link 컴포넌트를 사용하여 서로 다른 페이지 간의 이동을 최적화 할 수 있다.
+* 다른 페이지 또는 웹 사이트의 일부를 연결할 때 Link컴포넌트 사용
+* 화면 전환 속도가 빠른 이유
+
+```
+import Link from 'next/link';
+
+function Navbar() { 
+  return (
+  <div>
+    <Lick href-'/about'>Home</Link>
+    <Link hrefs' /about '>About </Link>
+    <Link href-'/about"›Contact</Link> 
+  <dlv>
+  );
+}
+```
+
+#### router.push 메서드
+
+* Link 컴포넌트 대신 useRouter Hook을 사용해서 다른 페이지로 이동 가능
+* 클라이언트에서의 네비게이션 구현에 router.push를 사용하는 것은 비추천
+
+#### 자동 이미지 최적화
+* 이 기능을 사용하면 이미지를 최신 이미지 포맷으로 제공할 수 있습니다.
+* 최신 포맷을 지원하지 않는 브라우저의 경우에는 png나 jpeg와 같은 예전 이미지 포맷도 제공.
+
+
+### layout 속성값
+
+* fixed -> 이미지 크기 유지
+* Responsive -> 이미지를 최적화해서 제공
+* Intrinsic -> fixed와 responsive를 절반씩 수용합니다. 크기가 작은 화면에서는 이미지 크기를 조절하고, 이미지보다 큰 화면에서는 이미지 크기를 조절하지 않습니다.
+* fill -> 부모 요소의 가로와 세로 크기에 따라 이미지를 늘림 fill을 사용할 경우 width와 height 사용 불가.
+
+#### 메타데이터
+
+* 페이스북의 오픈 그래프처럼 공유 자료를 카드 형태로 보내려면 몇가지 메타 데이티를 추가해야 합니다.
+* Next.js 에서는 내장 Head 컴포넌트를 제공하여 이런 메타 데이터를 쉽게 다를 수 있습니다.
+
+### app.js 와 _document.js 페이지 커스터마이징
+
+```
+import * ../styles/globals.css
+    
+    function MyApp(( Component pageProps )) {
+      return <Component {…pageProps} />;
+    }
+
+  export default MyApp;
+```
+* 이 MyApp 컴포넌트와 그 속성인 pageProps를 반환합니다.
+* 이에 앞서 제작한 Navbar 컴포넌트를 추가 하면 더 이상 index, about,contact 페이지에 Navbar 컴포넌트를 추가하지 않아도 된다.
+
