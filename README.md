@@ -272,7 +272,7 @@ export default function ImagePage(){
 ## 동적 라우팅
 
 * /pages/posts/[slug].js 파일을 생성하고 다음과 같이 useRouter를 사용하면 파라메터를 사용할 수 있다.
-* ��대괄호는 반드시 사용해야 하고, slug는 pid, category 등 원하는 것을 넣으면 된다.
+* 대괄호는 반드시 사용해야 하고, slug는 pid, category 등 원하는 것을 넣으면 된다.
 
 ```
 import { useRouter } from 'next/router'
@@ -335,7 +335,7 @@ function Navbar() {
 * 최신 포맷을 지원하지 않는 브라우저의 경우에는 png나 jpeg와 같은 예전 이미지 포맷도 제공.
 
 
-### layout 속성값
+#### layout 속성값
 
 * fixed -> 이미지 크기 유지
 * Responsive -> 이미지를 최적화해서 제공
