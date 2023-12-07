@@ -9,7 +9,7 @@ React2-3-1
 - 자바스크립트 웹 프레임워크
 - 리엑트에 없는 다양한 기능을 제공
 
-### 특징
+## 특징
 
 - 서버 사이트 렌더링(SSR)
 - 정적 사이트 생성(SSG)
@@ -36,9 +36,8 @@ React2-3-1
 - 이로써 리액트가 제공하지 않는 여러가지 기능을 제공하게 됩니다.
 
 
-### Next.js가 제공하는 새로운 기능
+## Next.js가 제공하는 새로운 기능
 
->코드 분할(SpLitting): 페이지를 로딩 할 때 번들을 여러 조각으로 나누어 필요한 부분만 전송하는 방식
 
 *   서버 사이트 렌더링
 *   파일 기반 라우팅
@@ -249,23 +248,23 @@ export default function ImagePage(){
 }
 
 ```
-### CSR을 사용할 때의 주요 이점 
+## CSR을 사용할 때의 주요 이점 
 * 전체 자바스크립트 번들을 다운로드한다는 것은 렌더링할 모든페이지가 이미 브라우저에 다운로드 되어 있다는 뜻
 * 다른 페이지로 이동해도 서버에 요청할 필요없이. 바로 페이지를 이동할 수 있습니다.
 * 페이지를 바꾸기 위해 새로 고칠 필요가 없습니다.
 
-### 쉬운 페이지 전환
+## 쉬운 페이지 전환
 * 클라이언트에서 내비게이션은 브라우저 화면을 새로 고칠 필요 없이 다른 페이지로 이동을 가능 
 * 페이지 간 전환에 멋진 효과를 넣을 수도 있습니다. 애니메이션을 방해할 요소가 없기 때문입니다. 
 
 
 
 
-# 동작 컴포넌트 로딩
+## 동작 컴포넌트 로딩
 * 앞서 React.useEffect 혹을 사용하여 브라우저에서 코드를 실행하는 경우에만 컴포넌트를 렌더링 한다.
 * dynamic 함수로도 똑갈이 동작하게 할 수 있다.
 
-# 라우팅 시스템
+## 라우팅 시스템
 * eact의 React Router, Reach Router 등은 클라이언트 라우팅만 구현할 수 있습니다.
 * Next는 파일시스템 기반 페이지와 라우팅을 합니다.
 
@@ -342,12 +341,13 @@ function Navbar() {
 * Intrinsic -> fixed와 responsive를 절반씩 수용합니다. 크기가 작은 화면에서는 이미지 크기를 조절하고, 이미지보다 큰 화면에서는 이미지 크기를 조절하지 않습니다.
 * fill -> 부모 요소의 가로와 세로 크기에 따라 이미지를 늘림 fill을 사용할 경우 width와 height 사용 불가.
 
+7주차
 #### 메타데이터
 
 * 페이스북의 오픈 그래프처럼 공유 자료를 카드 형태로 보내려면 몇가지 메타 데이티를 추가해야 합니다.
 * Next.js 에서는 내장 Head 컴포넌트를 제공하여 이런 메타 데이터를 쉽게 다를 수 있습니다.
 
-### app.js 와 _document.js 페이지 커스터마이징
+## app.js 와 _document.js 페이지 커스터마이징
 
 ```
 import * ../styles/globals.css
@@ -361,3 +361,141 @@ import * ../styles/globals.css
 * 이 MyApp 컴포넌트와 그 속성인 pageProps를 반환합니다.
 * 이에 앞서 제작한 Navbar 컴포넌트를 추가 하면 더 이상 index, about,contact 페이지에 Navbar 컴포넌트를 추가하지 않아도 된다.
 
+## 다크모드
+
+```
+다크모드 설정
+const { createContext } = require("react");
+
+const ThemeContext = createContext({
+	theme: 'light'
+	toggleTheme: () => null
+})
+
+export default ThemeContext
+
+_app.js
+const themes = {
+	dark: {
+		background:’black’,
+		color:’white’
+	},
+light: {
+	background:’black’,
+	color:’white’
+}
+}
+```
+### document.js 페이지
+
+* Next페이지에서는 <html>,<head>,<body>와 같은 기본적인 HTML 태그를 정의할 필요가 없습니다.
+*   Head 컴포넌트에서 이 태그를 제공하고 있습니다.
+*   puges/_documentjs 파일로 기능을 확장할 수 있습니다.
+
+8주차
+### Rest API 호출
+
+```
+export async function (getServerSideProps) {
+
+//여기에 REST API를 호출합니다.
+const userReg = await axios.get('hetps: //dummy. restapiexample. com/api/vi/employees’);
+
+	return {
+		props: {
+			users: userReq.employee_name,
+		},
+	}
+}
+```
+9주차
+
+## 디렉토리 구조 구성
+
+* Node modiles/ : Nextjs 프젝트의 의존성 패키지를 설치하는 디렉토리
+* pages/ : 애플리케이션의 페이지 파일을 저장하고 라우팅 시스템 관리
+* public/ : 컴파일된 CSS 및 자바스크립트 파열, 이미지, 아이콘 등의 정적 자원 관리
+* styles/ : 스타일링 포맷(CSS, SASS, LESS 등)과 관계없이 스타일링 모듈 관리
+* pages/ 디렉토리를 ac/ 디렉토리 안으로 옮길 수 있습니다.
+* public/과 node modules/ 를 제외한 다른 디렉토리는 모두 C/ 로 옮길 수 있습니다.
+
+
+## 컴포넌트 구성
+* 컴포넌트는 세 가지로 분류하고 각 경포넌트와 관련된 스타일 및 테스트 파일을 같은 곳에 두어야 합니다.
+* 코드를 더 효율적으로 구성하기 위해 아토믹 디자인 원칙에 따라 디렉토리를 구성합니다.
+* atoms : 가장 기본적인 컴포넌트 관리. button, input, p와 같은 표준 HTML요소를 감싸 는 용도로 사용되는 컴포넌트
+* molecules : atom에 속한 컴포넌트 여러 개를 조합하여 복잡한 구조로 만든 컴포넌트 관리.input과 label을 합쳐서 만든 새로운 컴포넌트
+* organisms : molecules와 atoms를 섞어서 더 복잡하게 만든 컴포넌트 관리.footer나carousel 컴포넌트
+* templates : 위의 모든 컴포넌트를 어떻게 배치할지 결정해서 사용자가 접근할 수 있는 페이지
+
+
+## 정적 자원의 구성
+* 정적 자원은 public/ 디렉토리에서 관리합니다.
+* 일반적인 웹 애플리케이션에서는 다음과 같은 정적 자원을 사용합니다.
+    - 이미지
+    - 컴파일한 자바스크립트 파일 컴파일한 CSS 파일
+    - 아이콘
+    - 정적 파일
+* 먼저 public/assets/ 디렉토리를 만들고 파일 유형별로 다시 디렉토리를 추가 합니다.
+* 그리고 이곳에 저장된 파일에 접근하고자 하면 예와 같이 public을 제외한 주소를 써주면 됩니다.
+
+
+## lib 파일 수성
+* lib 파일은 서드파티 라이브러리를 감싸는 스크립트를 말합니다.
+* lib 파일은 특정 라이브러리에 특화된 것입니다.GraphQL 만일 GraphQL을 사용한다면, 클라이언트를 초기화 하고, 질의문과 뮤테이션을 저장하는 등의 작업이 필요합니다.
+* 먼저 이런 스크립트를 좀 더 모듈화하기 위해 프로젝트 root에 lib/graphql/ 디렉토리를 듭니다.
+
+
+## ssr-rest-api
+
+* 먼저 새로운 Next 프로젝트를 생성합니다.
+    - прх create-next-app ssr-rest-api
+* Axios 패키지를 추가합니다. S npm install axios 
+* 이번 프로젝트는 public API를 호출하여 몇몇 상용자의 등과 1D를 표시해 봅니다.
+* 사용자 이름을 클릭하면 세부 페이지로 이동해서 사용자 정보를 자세히 볼 수 있도록 만듭니다.
+
+
+## 클라이언트가 데이터 불러오기
+
+* 동적 웹앱에서는 클라이언트가 데이터를 불러오는 경우가 많습니다.
+* 그러나 서버가 데이터를 불러오는 것이 좀 더 안전합니다.
+* API 엔드포인트 주소, 매개변수 값, HTTP 헤더, 인증 토큰 값 등 중요한 정보가 외부에 노 출되지 않기 때문입니다.
+* 브라우저에서 HTTP요청을 보낼 때는 반드시 다음 사항을 지켜야 합니다.
+    - 믿을 수 있는 곳에만 HTTP요정을 보내야 합니다.
+    - SSL 인증서를 통해 안전하게 접근할 수 있는 곳의 HTTP API만 사용해야 합니다.
+    - 브라우저에서 원격 데이터베이스에 직접 연결해서는 안 됩니다.
+
+
+## csr-rest-api
+
+
+* 첫 번째: return 안을 보면, "Loading users.. 문자열 가지고 있습니다. HomePage컴포넌트의 초기 강태입니다.
+* 두 번째: 리엑트 하이드레이션이 일어난 후에야 사용자 목록을 볼 수 있습니다.
+* 클라이언트는 컴포넌트가 마운트된 후에 브라우저의 fetch API를 사용해서 HTTP 요청을
+* 보냅니다.
+* 사용자 상세 페이지를 다음 순서대로 만들어 봅니다.
+* pages/users/lusernamelJs 파일생성 》 getServersideProps함수 만들기 》 경로 매개변 수 [username]과 .env의 인증 토큰 값 가져오기.
+
+
+* 원격 서버에서 데이터를 가져오는 경우 CORS 문제가 쉽게 발생합니다.
+* 클라이언트에 인증 토큰을 노출한다는 점입니다.
+* Network 탭을 보면 특정 엔드포인트로 보낸 HTTP 요정을 볼 수 있습니다.
+* 이 요청의 헤더를 보면 평문으로 된 인증 토큰값을 확인할 수 있습니다.
+
+* pages/api/singleUserjs 파일을 만들고 다음과 같이 코딩합니다.
+
+```
+import axios from 'axios’;
+
+export default async function handler(red,rest){
+	const username =  reg. query.username;
+	const API_ENOPOINT = process. env.API_ENDPOINT; 
+	const API_TOKEN = process.env.API_TOKEN;
+	
+	const userRed Baalt axios.get(
+	’S(API, ENDPOINT) /api/04/users/$(username)*,
+	{headers: ( authorization: API,TOKEN ) }
+);
+	res. status (200). json(userReg.data);
+}
+```
