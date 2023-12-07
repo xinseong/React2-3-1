@@ -499,3 +499,49 @@ export default async function handler(red,rest){
 	res. status (200). json(userReg.data);
 }
 ```
+## GraphQL API
+
+* API에서 사용할 수 있는 질의어로 REST SOAP 같은 방식과는 다른 새로운 관점으로 API 데이터를 다릅니다.
+* 꼭 필요한 데이터만 불러오도록 지정할 수 있습니다.
+* 한 번의 요정으로 여러 곳의 데이터를 불러올 수 있습니다.
+* 사용할 데이터에 대해 정적이면서도 강력한 타입 시스템을 제공합니다.
+* 여기서는 Apollo 클라이언트를 사용합니다.
+* Apollo는 많이 사용되는 GraphqL 클라이언트로, react와 next를 기본으로 지원합니다.
+
+
+## signbook		lib/apollo/index.js
+
+* Apollo 클라이어트를 초기화하기 위한 함수를 추가합니다. 113페이지 하단의 코드.
+* 이 함수를 사용하면 페이지마다 새로운 Apollo 클라이언트를 만들지 않아도 됩니다.
+* 대신 클라이언트 인스턴스를 apolloClient 변수에 저장하여, 인스턴스를 함수 인자에 초기 상태값으로 전달합니다.
+* 해당 함수는 지역 캐시값과 전달받은 초기 상태값을 합쳐서 전체 상태값을 만들어 사용합니다.
+
+
+## GraphoL 질의문 생성
+
+* 사용할 질의문은 lib/apollo/queries/ 디렉토리 아래 저장해야 합니다.
+* 다음 pages/indexjs 파일에서 질의문을 불러와 사용합니다.
+```
+import {useQuery } from “@apollo/client"; import GET_LATEST SIGNS from ‘../lib/apollo/queries/getLatestSigns';
+
+export default function HomePage(){
+  const {loading, data } = useQuery(GET_LATEST_SIGNS,fetchPolicy: ('no-cache'));
+
+return <div></div›;
+};
+```
+* useQuery 훅 덕분에 질의 처리와 관련된 다음 세 가지 상태값에 접근할 수 있습니다.
+
+## 지역 및 전역 상태 관리
+
+* 리액트 앱에서는 상태 관리는 아주 중요한 부분입니다.
+* 상태는 동적 정보의 일종입니다.
+    - 높은 수준의 상호 작용이 가능한 비 구현하거나,
+    - 더 뛰어난 UX 개발 위한 필수 요소입니다.
+* 최신 웹앱에서는 비가 상태를 사용하고, 관리하는 경우가 많이 있습니다.
+    - 밝은 테마에서 어두운 테마로 변경하거나.
+    - 배송 주소를 바꿈으로써 폼의 상태를 변경합니다.
+    - 버튼 클릭 만으로 앱의 상태를 변하게 할 수도 있다.
+* 상태 관리 때문에 앱에 더 뛰어난 상호 작용 등의 기능을 구현할 수 있지만, 앱의 복잡도는 증가 합니다.
+* 지역 상태 관리에 있어서 앱의 상태는 컴포넌트 스코프 상태를 의미합니다.
+* Increment버튼을 클릭하면 현재 click하면 Count값에 1을 더하고, Decrement버튼을 클릭하면 현재 값에서 1을 뺍니다.
