@@ -501,7 +501,7 @@ export default async function handler(red,rest){
 ```
 ## GraphQL API
 
-* API에서 사용할 수 있는 질의어로 REST SOAP 같은 방식과는 다른 새로운 관점으로 API 데이터를 다릅니다.
+* API에서 사용할 수 있는 질의어로 REST SOAP 같은 방식과는 다른 새로운 관점으로 API데이터를 다릅니다.
 * 꼭 필요한 데이터만 불러오도록 지정할 수 있습니다.
 * 한 번의 요정으로 여러 곳의 데이터를 불러올 수 있습니다.
 * 사용할 데이터에 대해 정적이면서도 강력한 타입 시스템을 제공합니다.
@@ -522,7 +522,7 @@ export default async function handler(red,rest){
 * 사용할 질의문은 lib/apollo/queries/ 디렉토리 아래 저장해야 합니다.
 * 다음 pages/indexjs 파일에서 질의문을 불러와 사용합니다.
 ```
-import {useQuery } from “@apollo/client"; import GET_LATEST SIGNS from ‘../lib/apollo/queries/getLatestSigns';
+import {useQuery } from “@apollo/client";import GET_LATEST SIGNS from ‘../lib/apollo/queries/getLatestSigns';
 
 export default function HomePage(){
   const {loading, data } = useQuery(GET_LATEST_SIGNS,fetchPolicy: ('no-cache'));
@@ -531,6 +531,8 @@ return <div></div›;
 };
 ```
 * useQuery 훅 덕분에 질의 처리와 관련된 다음 세 가지 상태값에 접근할 수 있습니다.
+
+11/23
 
 ## 지역 및 전역 상태 관리
 
@@ -545,3 +547,143 @@ return <div></div›;
 * 상태 관리 때문에 앱에 더 뛰어난 상호 작용 등의 기능을 구현할 수 있지만, 앱의 복잡도는 증가 합니다.
 * 지역 상태 관리에 있어서 앱의 상태는 컴포넌트 스코프 상태를 의미합니다.
 * Increment버튼을 클릭하면 현재 click하면 Count값에 1을 더하고, Decrement버튼을 클릭하면 현재 값에서 1을 뺍니다.
+
+```
+import React, ( useState ) from "react";
+
+export default  function Counter({ initialCount = 0 }){
+const [count, setCount] = useState(initialCount);
+
+return (
+<div>
+	  <b>Count is: (count)</b><br />
+	  <button onClick=(() = setCount (count + 1))>
+		Increment +
+	  </button>
+	  <button onClick={() = setCount(count - 1)}>
+		Decrement - 
+    </button>
+	</div›
+	);
+}
+
+```
+### 아톰 컴포넌트 
+>비교적 작은 크기로 가장 흔하게 접하는 컴포넌트
+
+### 로딩 상태
+* 클라이언트 측에서 외부 데이터를 읽어올 때, 아직 데이터를 다 가져오지 못한 상황입니다.
+* 즉, 전송한 HTTP 요청이 아직 끝나지 않은 상태입니다.
+* 이런 경우 일반적으로 loading 상태값을 true로 세팅하고, 전송 요청이 끝날 때까지 UI에 스피너 (spinner)아이콘 등을 표시합니다.
+
+
+## 전역 상태 관리
+
+* 전역 상태는 여러 컴포넌트가 공유하는 상태를 의미합니다.
+* 즉, 어떤 컴포넌트라도 접근 및 수정이 가능한 상태인 것입니다.
+* Vue.js나 Angular와는 다르게 React는 데이터 흐름이 단방향 입니다.
+* 단방향의 데이터 흐름은 
+1) 오류 발생 가능성을 줄여 주고, 
+2) 디버깅하기 쉬우며 효율적이라는 장점이 있습니다.
+
+
+## boilerplate
+
+* 선택한 상품을 전역 상태에 저장할 때는 자바스크립트 객체로 저장하는 방법을 사용합니다.
+* 각 속성은 상품ID를 의미하며, 이 값은 사용자가 담은 상품의 개수를 나타냅니다.
+* data/items.js 파일을 열어보면 여기서 사용할 상품 정보를 확인할 수 있습니다.
+* 사용자가 당근 네 개와 양파 두개를 담았을 때의 상태 객체는 다음과 같습니다.
+
+
+
+>* 선택한 상품을 전역 상태에 저장할 때는 자바스크립트 객체로 저장하는 방법을 사용합니다.
+>* 각 속성은 상품ID를 의미하며, 이 값은 사용자가 담은 상품의 개수를 나타냅니다.
+>* data/items.js 파일을 열어보면 여기서 사용할 상품 정보를 확인할 수 있습니다.
+>* 사용자가 당근 네 개와 양파 두개를 담았을 때의 상태 객체는 다음과 같습니다.
+
+```
+export default function Highlight(props) {
+  return(
+  <>
+    <span>{props. text}</span>
+    <style jsx>{' 
+      span {
+        background: yellow; 
+        font-weight: bold;
+      }
+    '}</style>
+  </>
+  );
+}
+```
+
+>* 만일 모든 컴포넌트에 적용할 CSS 규칙을 만들고 싶다면 global 속성을 지정하면 된다.
+>* 전역 상태로 사용할 경우 예상하지 못한 결과를 초래할 수 있으니 조심
+
+## CsS-in-JS의 단점
+
+* IDE나 코드 편집기 등 개발 도구에 대한 지원이 부족합니다.
+* 문법 하이라이팅, 자동 완성, 린트(int)기능을 제공하지 않습니다.
+* 코드 내에서 CSS에 대한 의존성이 점점 커지기 때문에 앱 번들도 커지고 느려 집니다.
+* 서버에 미리 CSS를 생성해도 클라이언트에서 리액트 하이드레이션이 끝나면 CSS를 다시 해야 합니다.
+* 이 때문에 실행 시점에 부하가 커지며, 웹 앱이 계속 느려지게 됩니다.
+
+
+## SASS
+
+* Next에서 기본으로 지원하는 전 처리기 입니다.
+* 단 패키지 설치가 필요합니다. S npm install sass
+* SASS 및 SCSS(Sassy CSS) 문법으로 CSS Module을 만들고 사용할 수 있습니다.
+* styles/Home.module.css 파일 이름을 styles/Home.module.scss로 바꿔주면 됩니다.
+
+## Chakra UI
+
+* 오픈소스 컴포넌트 라이브러리로, 모듈화 되어 있고 접근성이 뛰어나며 보기 좋은 비를 만들 수 있습니다.
+* 버튼, 모달, 입력 등 다양한 내장 컴포넌트를 제공합니다.
+* dark mode 및 light mode를 모두 지원합니다.
+* Chakra ul의 useColorMode 흑을 사용해서 현재 사용하는 컬러 모드를 확인할 수 있습니다.
+
+## 테스트란?
+
+> 1. 단위 테스트
+코드의 각 함수가 제대로 작동하는지 확인하는 테스트 입니다.
+함수에 올바른 입력과 잘못된 입력을 각각 주고 그 결과가 예상과 일치하는지 봅니다.
+또한 작동 과정에서 예측하지 못한 오류가 발행하는지도 확인합니다.
+
+>2. 엔드 투 엔드 테스트
+앱에 대한 사용자 상호 작용을 흉내내서 특정 작동이 발행했을 때 적절한 응답을 하는지 확인하는 테스트 입니다.
+폼 입력이나 css가 적절하가 적용되는지 등을 테스트합니다.
+
+> 3. 통합 테스트
+함수나 모듈과 같이 서로 구분되는 영역이 함께 잘 작동하는지 확인하는 테스트 입니다.
+서로 연관된 함수와 모듈을 한데 묶어서 주어진 입력에 맞는 적절한 출력을 만들어 내는지 확인합니다.
+
+## Jest를 사용한 단위 테스트와 통합 테스트
+
+1. 자바스크립트 생태계에서 가장 유명한 테스트 러너입니다.
+2. 먼저 GitHub 저장소에서 09-testing-nextjs/boilerplate를 클론합니다.
+3. 그리고 node모듈을 설치합니다. $ npm !
+
+이제 의존성 패키지를 설치할 차례입니다.
+
+4. 클론한 디렉토리에서 jest를 설치 합니다. S npm i jest --save-dev
+
+페이지 테스트를 만들 때 주의할 점은 다음과 같습니다.
+- pages/ 안의 모든 js jsx tS tsx 파일을 앱 페이지로 간주합니다.
+- 따라서 소트 파일은 절대 pages/ 안에 작성하면 안됩니다
+
+### iCypress를 사용한 엔드 투 엔드 테스트
+
+* 앱 전체가 잘 동작하는지 확인하는 테스트입니다.
+* Cypress는 웹 브라우저에서 돌아가는 모든 것을 테스트할 수 있는 강력한 도구입니다.
+
+
+1. 관례상 Cypress 엔드 투 엔드 테스트를 위한 디렉토리는 root에 만듭니다. cypress/
+2. cypress/integration/api.specjs라는 테스트 파일을 만들고 작성합니다.
+3. 작성은 sample 코드를 참고합니다.
+4. 코드 작성을 끝내고 명령으로 실행하면 오류가 발생합니다.
+> $ npm cypress 
+5. Cypress는 실제 서버를 대상으로 테스트를 실행하기 때문에 나는 오류입니다.
+6. 이 오류는 다음 패키지 설치로 해결할 수 있습니다.
+> $ npm i start-server-and-test—dev
+7. 그리고 Cypress 시작 전 서버를 실행할 수 있도록 packages.json의 scripts에 다음을 주가 합니다. 이제 npm e2e를 먼저 실행하고 테스트 하면 됩니다.
